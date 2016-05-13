@@ -22,10 +22,12 @@
     //在appdelegate中设置
     [HttpClient setServerHost:@"https://www.xsdota.com/weibo/v1" debugHost:@"http://localhost:7888/weibo/v1"];
     
-    
     NSDictionary *param = @{@"token":@"e0323a9039add2978bf5b49550572c7c"};
     
-    [XSHttpClient.$(GET).url(@"title/getall.json").params(param)
+    [XSHttpClient
+     .$(GET)
+     .url(@"title/getall.json")
+     .params(param)
      getSuccess:^(id responseObject) {
          NSLog(@"%@",responseObject);
     } failure:^{
@@ -34,7 +36,11 @@
     
     
     //开启测试
-    [XSHttpClient.$(POST).url(@"title/getall.json").params(param).DeBug(YES)
+    [XSHttpClient
+     .$(POST)
+     .url(@"title/getall.json")
+     .params(param)
+     .DeBug(YES)
      getSuccess:^(id responseObject) {
         NSLog(@"%@",responseObject);
     } failure:^{
@@ -42,7 +48,10 @@
     }];
     
     //添加设置请求解析 响应解析设置
-    [XSHttpClient.$(GET).url(@"title/getall.json").params(param)
+    [XSHttpClient
+     .$(GET)
+     .url(@"title/getall.json")
+     .params(param)
      .setRequestSerializer(requestHttp)
      .setResponseSerializer(responseHttp)
      getSuccess:^(id responseObject) {
@@ -52,21 +61,19 @@
     }];
     
     //添加请求头key/value
-    [XSHttpClient.$(GET).url(@"title/getall.json").params(param)
-    .setHttpHeader(@{@"key1":@"value1"})
+    [XSHttpClient
+     .$(GET)
+     .url(@"title/getall.json")
+     .params(param)
+     .setHttpHeader(@{@"key1":@"value1"})
     getSuccess:^(id responseObject) {
         NSLog(@"%@",responseObject);
     } failure:^{
         NSLog(@"error");
     }];
     
-    
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 @end
