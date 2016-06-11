@@ -127,7 +127,7 @@
     };
 }
 
-- (void)getSuccess:(void (^)(id))success failure:(void (^)())failure {
+- (void)data:(void (^)(id))data failure:(void (^)())failure {
     HttpClient *client = [[self class] manager];
 //    client.responseSerializer.acceptableContentTypes
     
@@ -143,8 +143,8 @@
     switch (self.mRequestType) {
         case GET:{
             [client GET:self.mUrl parameters:self.mParameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                if (success) {
-                    success(responseObject);
+                if (data) {
+                    data(responseObject);
                 }
             } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
                 NSLog(@"%@",error);
@@ -156,8 +156,8 @@
             break;
         case POST:{
             [client POST:self.mUrl parameters:self.mParameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                if (success) {
-                    success(responseObject);
+                if (data) {
+                    data(responseObject);
                 }
             } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
                 NSLog(@"%@",error);

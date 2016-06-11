@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 #import "HttpClient.h"
+#import "AFN/AFNetworking/AFNetworking.h"
 
 @interface ViewController ()
 
@@ -28,49 +29,49 @@
      .$(GET)
      .url(@"title/getall.json")
      .params(param)
-     getSuccess:^(id responseObject) {
-         NSLog(@"%@",responseObject);
+     data:^(id responseObject) {
+        NSLog(@"%@",responseObject);
     } failure:^{
         NSLog(@"error");
     }];
-    
+
     
     //开启测试
-    [XSHttpClient
-     .$(POST)
-     .url(@"title/getall.json")
-     .params(param)
-     .DeBug(YES)
-     getSuccess:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-    } failure:^{
-        NSLog(@"error");
-    }];
+//    [XSHttpClient
+//     .$(POST)
+//     .url(@"title/getall.json")
+//     .params(param)
+//     .DeBug(YES)
+//     getSuccess:^(id responseObject) {
+//        NSLog(@"%@",responseObject);
+//    } failure:^{
+//        NSLog(@"error");
+//    }];
     
     //添加设置请求解析 响应解析设置
-    [XSHttpClient
-     .$(GET)
-     .url(@"title/getall.json")
-     .params(param)
-     .setRequestSerializer(requestHttp)
-     .setResponseSerializer(responseHttp)
-     getSuccess:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-    } failure:^{
-        NSLog(@"error");
-    }];
-    
-    //添加请求头key/value
-    [XSHttpClient
-     .$(GET)
-     .url(@"title/getall.json")
-     .params(param)
-     .setHttpHeader(@{@"key1":@"value1"})
-    getSuccess:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-    } failure:^{
-        NSLog(@"error");
-    }];
+//    [XSHttpClient
+//     .$(GET)
+//     .url(@"title/getall.json")
+//     .params(param)
+//     .setRequestSerializer(requestHttp)
+//     .setResponseSerializer(responseHttp)
+//     getSuccess:^(id responseObject) {
+//        NSLog(@"%@",responseObject);
+//    } failure:^{
+//        NSLog(@"error");
+//    }];
+//    
+//    //添加请求头key/value
+//    [XSHttpClient
+//     .$(GET)
+//     .url(@"title/getall.json")
+//     .params(param)
+//     .setHttpHeader(@{@"key1":@"value1"})
+//    getSuccess:^(id responseObject) {
+//        NSLog(@"%@",responseObject);
+//    } failure:^{
+//        NSLog(@"error");
+//    }];
     
 }
 

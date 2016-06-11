@@ -69,6 +69,6 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
 - (HttpClient *(^)(BOOL isDebug))DeBug;
 
 //开始请求
-- (void)getSuccess:(void (^)(id responseObject))success failure:(void (^)())failure;
+- (void)data:(void (^)(id responseObject))data failure:(void (^)())failure;
 
 @end
