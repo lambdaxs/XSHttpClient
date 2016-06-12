@@ -16,6 +16,7 @@
 @property (nonatomic,copy)id mParameters;
 @property (nonatomic,copy) NSDictionary * mHeader;
 @property (nonatomic,copy) NSDictionary * mFileDict;
+@property (nonatomic,copy) NSSet *acceptFormat;
 @property (nonatomic,assign)BOOL isDebug;
 @end
 
@@ -98,15 +99,15 @@
     };
 }
 
-//- (HttpClient *(^)(NSString *))setAcceptFormat {
-//    
-//    return ^HttpClient *(NSString *format){
-//        NSMutableSet *set = [NSMutableSet setWithSet:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html",nil]];
-//        [set addObject:format];
-//        self.responseSerializer.acceptableContentTypes = set;
-//        return self;
-//    };
-//}
+- (HttpClient *(^)(NSString *))appendAcceptFormat {
+//    [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html",nil]
+    return ^HttpClient *(NSString *format){
+        NSMutableSet *set = [NSMutableSet setWithSet:self.acceptFormat];
+        [set addObject:format];
+        self.responseSerializer.acceptableContentTypes = set;
+        return self;
+    };
+}
 
 - (NSString *)filterUrl{
     
@@ -245,7 +246,8 @@
 //初始化默认参数
 - (void)update {
     self.mUrl = nil;
-    self.mRequestType = GET;
+    self.acceptFormat = self.responseSerializer.acceptableContentTypes;
+//    [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html",nil]
     self.mRequestSerializer = requestHttp;
     self.mResponseSerializer = responseJson;
     self.mParameters = nil;

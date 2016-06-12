@@ -25,9 +25,26 @@
     
     NSDictionary *param = @{@"token":@"e0323a9039add2978bf5b49550572c7c"};
     
+    AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
+    //设置请求解析类型
+    [mgr setRequestSerializer:[AFHTTPRequestSerializer serializer]];
+    //设置响应解析类型
+    [mgr setResponseSerializer:[AFJSONResponseSerializer serializer]];
+    //设置响应可接收类型
+    mgr.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //开始请求
+    [mgr POST:@"http://xxx" parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+    
     [XSHttp(GET)
-    .url(@"title/getall.json")
-    .params(param)
+     .url(@"title/getall.json")
+     .params(nil)
+     .setRequestSerializer(requestHttp)
+     .setResponseSerializer(responseJson)
+     .appendAcceptFormat(@"text/html")
     data:^(id responseObject) {
         NSLog(@"%@",responseObject);
     } failure:^{

@@ -27,13 +27,13 @@ typedef NS_ENUM(NSInteger, RequestType){
     UPLOAD
 };
 
-//请求解析
+//请求解析类型
 typedef NS_ENUM(NSInteger, RequestSerializer){
     requestHttp,
     requestJson
 };
 
-//响应解析
+//响应解析类型
 typedef NS_ENUM(NSInteger, ResponseSerializer){
     responseHttp,
     responseJson
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
 - (HttpClient *)and;
 
 //设置请求方式 GET POST UPLOAD...
-- (HttpClient *(^)(RequestType type))setRequestType;
+//- (HttpClient *(^)(RequestType type))setRequestType;
 
 //设置请求url
 - (HttpClient *(^)(NSString *url))url;
@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
 - (HttpClient *(^)(ResponseSerializer type))setResponseSerializer;
 
 //设置响应接收格式
-//- (HttpClient *(^)(NSString *format))setAcceptFormat;
+- (HttpClient *(^)(NSString *format))appendAcceptFormat;
 
 //设置是否用测试服务器
 - (HttpClient *(^)(BOOL isDebug))DeBug;
