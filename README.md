@@ -46,21 +46,21 @@ data:^(id responseObject) {
 ```objc
 //以from表单的形式上传图片
 //setFile函数传字典 name：参数名，data：图片的二进制数据，fileName：文件名。fileType：文件格式
-	UIImage *image = [UIImage imageNamed:@"2"];
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
+UIImage *image = [UIImage imageNamed:@"2"];
+NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
     
-    [XSHttpClient
-     .$(UPLOAD)
-     .url(@"title/upload.json")
-     .setFile(@{@"name":@"image",
-                @"data":imageData,
-                @"fileName":@"xiaos1.jpg",
-                @"fileType":@"image/jpg"})
-     .DeBug(YES)
-     data:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-    } failure:^{
-        NSLog(@"error");
-    }];
+[XSHttpClient
+.$(UPLOAD)
+.url(@"title/upload.json")
+.setFile(@{@"name":@"image",
+           @"data":imageData,
+           @"fileName":@"xiaos1.jpg",
+           @"fileType":@"image/jpg"})
+.DeBug(YES)
+data:^(id responseObject) {
+   NSLog(@"%@",responseObject);
+} failure:^{
+   NSLog(@"error");
+}];
 ```
 
