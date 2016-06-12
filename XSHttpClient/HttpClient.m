@@ -14,7 +14,8 @@
 @property (nonatomic,assign)RequestSerializer mRequestSerializer;
 @property (nonatomic,assign)ResponseSerializer mResponseSerializer;
 @property (nonatomic,copy)id mParameters;
-@property (nonatomic,copy)NSDictionary * mHeader;
+@property (nonatomic,copy) NSDictionary * mHeader;
+@property (nonatomic,copy) NSDictionary * mFileDict;
 @property (nonatomic,assign)BOOL isDebug;
 @end
 
@@ -53,6 +54,14 @@
 - (HttpClient *(^)(RequestType))$ {
     return ^HttpClient *(RequestType type){
         self.mRequestType = type;
+        return self;
+    };
+}
+
+- (HttpClient *(^)(NSDictionary *))setFile {
+    NSAssert(self.mRequestType == UPLOAD, @"GET POST 请求不支持上传文件,请使用UPLOAD");
+    return ^HttpClient *(NSDictionary *fileDict){
+        self.mFileDict = fileDict;
         return self;
     };
 }
@@ -128,6 +137,9 @@
 }
 
 - (void)data:(void (^)(id))data failure:(void (^)())failure {
+    
+    NSAssert(self.mUrl, @"未设置请求URL");
+    
     HttpClient *client = [[self class] manager];
 //    client.responseSerializer.acceptableContentTypes
     
@@ -140,33 +152,54 @@
     self.mUrl = [self filterUrl];
     NSLog(@"%s-%d-%@",__func__,__LINE__,self.mUrl);
     
+    //完成回调
+    void (^completeOperate)(id  _Nonnull responseObject) = ^(id  _Nonnull responseObject){
+        if (data) {
+            data(responseObject);
+        }
+    };
+    
+    //失败回调
+    void (^errorOperate)(NSError * _Nonnull error) = ^(NSError * _Nonnull error){
+        NSLog(@"%@",error);
+        if (failure) {
+            failure();
+        }
+    };
+    
+    
     switch (self.mRequestType) {
         case GET:{
             [client GET:self.mUrl parameters:self.mParameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                if (data) {
-                    data(responseObject);
-                }
+                completeOperate(responseObject);
             } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-                NSLog(@"%@",error);
-                if (failure) {
-                    failure();
-                }
+                errorOperate(error);
             }];
         }
             break;
         case POST:{
             [client POST:self.mUrl parameters:self.mParameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                if (data) {
-                    data(responseObject);
-                }
+                completeOperate(responseObject);
             } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-                NSLog(@"%@",error);
-                if (failure) {
-                    failure();
-                }
+                errorOperate(error);
             }];
         }
             break;
+        case UPLOAD:{
+            [client POST:self.mUrl parameters:self.mParameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                NSAssert(self.mFileDict[@"data"], @"未设置data：文件数据");
+                NSAssert(self.mFileDict[@"name"], @"未设置name：name参数");
+                NSAssert(self.mFileDict[@"fileName"], @"未设置fileName：文件名称");
+                NSAssert(self.mFileDict[@"fileType"], @"未设置fileType：文件格式");
+                [formData appendPartWithFileData:self.mFileDict[@"data"] name:self.mFileDict[@"name"] fileName:self.mFileDict[@"fileName"] mimeType:self.mFileDict[@"fileType"]];
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                completeOperate(responseObject);
+            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                errorOperate(error);
+            }];
+        }
+            break;
+            
     }
     
 }

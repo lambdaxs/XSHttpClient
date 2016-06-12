@@ -23,7 +23,8 @@ static NSString *ServerHost;
 //请求类型
 typedef NS_ENUM(NSInteger, RequestType){
     GET,
-    POST
+    POST,
+    UPLOAD
 };
 
 //请求解析
@@ -38,13 +39,14 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
     responseJson
 };
 
+
 + (HttpClient *)manager;
 
 - (HttpClient *)make;
 
 - (HttpClient *)and;
 
-//设置请求方式 GET POST ...
+//设置请求方式 GET POST UPLOAD...
 - (HttpClient *(^)(RequestType type))$;
 
 //设置请求url
@@ -52,6 +54,9 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
 
 //设置请求参数
 - (HttpClient *(^)(id params))params;
+
+//from上传时设置上传数据 传入的字典中有三个键data name fileName fileType
+- (HttpClient *(^)(NSDictionary *))setFile;
 
 //设置请求头
 - (HttpClient *(^)(NSDictionary *headerDict))setHttpHeader;

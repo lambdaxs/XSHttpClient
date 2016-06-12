@@ -36,6 +36,8 @@
     }];
 
     
+    
+    
     //开启测试
 //    [XSHttpClient
 //     .$(POST)
@@ -72,6 +74,26 @@
 //    } failure:^{
 //        NSLog(@"error");
 //    }];
+    
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    UIImage *image = [UIImage imageNamed:@"2"];
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
+    
+    [XSHttpClient
+     .$(UPLOAD)
+     .url(@"title/upload.json")
+     .setFile(@{@"name":@"image",
+                @"data":imageData,
+                @"fileName":@"xiaos1.jpg",
+                @"fileType":@"image/jpg"})
+     .DeBug(YES)
+     data:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+    } failure:^{
+        NSLog(@"error");
+    }];
     
 }
 
