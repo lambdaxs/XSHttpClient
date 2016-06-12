@@ -51,7 +51,7 @@
     };
 }
 
-- (HttpClient *(^)(RequestType))$ {
+- (HttpClient *(^)(RequestType))setRequestType {
     return ^HttpClient *(RequestType type){
         self.mRequestType = type;
         return self;
@@ -254,3 +254,7 @@
 }
 
 @end
+
+HttpClient *XSHttp(RequestType type){
+    return XSHttpClient.setRequestType(type);
+}

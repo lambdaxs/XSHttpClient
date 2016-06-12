@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
 - (HttpClient *)and;
 
 //设置请求方式 GET POST UPLOAD...
-- (HttpClient *(^)(RequestType type))$;
+- (HttpClient *(^)(RequestType type))setRequestType;
 
 //设置请求url
 - (HttpClient *(^)(NSString *url))url;
@@ -77,3 +77,5 @@ typedef NS_ENUM(NSInteger, ResponseSerializer){
 - (void)data:(void (^)(id responseObject))data failure:(void (^)())failure;
 
 @end
+
+HttpClient * XSHttp(RequestType type);

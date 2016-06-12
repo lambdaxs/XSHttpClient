@@ -2,8 +2,7 @@
 链式语法的网络库
 
 ```objc
-[XSHttpClient
-.$(GET)
+[XSHttp(GET)
 .url(@"title/getall.json")
 .params(param)
 data:^(id responseObject) {
@@ -16,8 +15,7 @@ data:^(id responseObject) {
 ```objc
 //开启测试 建议在appdelegate中设置
 //[HttpClient setServerHost:@"https://www.xsdota.com/weibo/v1" debugHost:@"http://localhost:7888/weibo/v1"];
-[XSHttpClient
-.$(POST)
+[XSHttp(POST)
 .url(@"title/getall.json")
 .params(param)
 .DeBug(YES)
@@ -30,8 +28,7 @@ data:^(id responseObject) {
 
 ```objc
 //添加设置请求解析 响应解析设置
-[XSHttpClient
-.$(GET)
+[XSHttp(GET)
 .url(@"title/getall.json")
 .params(param)
 .setRequestSerializer(requestHttp)
@@ -49,8 +46,7 @@ data:^(id responseObject) {
 UIImage *image = [UIImage imageNamed:@"2"];
 NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
     
-[XSHttpClient
-.$(UPLOAD)
+[XSHttp(UPLOAD)
 .url(@"title/upload.json")
 .setFile(@{@"name":@"image",
            @"data":imageData,

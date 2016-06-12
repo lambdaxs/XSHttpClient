@@ -25,22 +25,17 @@
     
     NSDictionary *param = @{@"token":@"e0323a9039add2978bf5b49550572c7c"};
     
-    [XSHttpClient
-     .$(GET)
-     .url(@"title/getall.json")
-     .params(param)
-     data:^(id responseObject) {
+    [XSHttp(GET)
+    .url(@"title/getall.json")
+    .params(param)
+    data:^(id responseObject) {
         NSLog(@"%@",responseObject);
     } failure:^{
         NSLog(@"error");
     }];
 
-    
-    
-    
     //开启测试
-//    [XSHttpClient
-//     .$(POST)
+//    [XSHttp(POST)
 //     .url(@"title/getall.json")
 //     .params(param)
 //     .DeBug(YES)
@@ -51,8 +46,7 @@
 //    }];
     
     //添加设置请求解析 响应解析设置
-//    [XSHttpClient
-//     .$(GET)
+//    [XSHttp(GET)
 //     .url(@"title/getall.json")
 //     .params(param)
 //     .setRequestSerializer(requestHttp)
@@ -64,8 +58,7 @@
 //    }];
 //    
 //    //添加请求头key/value
-//    [XSHttpClient
-//     .$(GET)
+//    [XSHttp(GET)
 //     .url(@"title/getall.json")
 //     .params(param)
 //     .setHttpHeader(@{@"key1":@"value1"})
@@ -81,8 +74,7 @@
     UIImage *image = [UIImage imageNamed:@"2"];
     NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
     
-    [XSHttpClient
-     .$(UPLOAD)
+    [XSHttp(UPLOAD)
      .url(@"title/upload.json")
      .setFile(@{@"name":@"image",
                 @"data":imageData,
